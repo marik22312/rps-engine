@@ -116,6 +116,8 @@ export class Game {
 
 			if (player.battle(opponent)) {
 				this.updateLocation(player, newLocation);
+			} else {
+				this.removePlayer(player);
 			}
 		}
 
@@ -136,9 +138,14 @@ export class Game {
 	private updateLocation(player: Player, newLocation: IPlayerLocation) {
 		const currentLocation = player.currentLocation;
 
+		this.removePlayer(player);
+
 		player.updateLocation(newLocation);
 		this.board[newLocation.locationCode] = player;
 
-		delete this.board[currentLocation.locationCode];
+	}
+
+	private removePlayer(player: Player) {
+		delete this.board[player.currentLocation.locationCode];
 	}
 }
