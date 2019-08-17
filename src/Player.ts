@@ -1,4 +1,5 @@
-import { IPlayerLocation, PlayerWeapons } from "./config";
+import { AVAILABLE_WEAPONS, IPlayerLocation, PlayerWeapons } from "./config";
+import { getRangemNumber } from "./utils";
 
 export class Player {
 	private weapon: PlayerWeapons;
@@ -12,7 +13,7 @@ export class Player {
 		};
 		this.isWeaponHidden = true;
 		
-		this.weapon = PlayerWeapons.ROCK;
+		this.weapon = AVAILABLE_WEAPONS[getRangemNumber(0, AVAILABLE_WEAPONS.length -1)];
 	}
 
 	public moveUp(){

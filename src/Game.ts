@@ -53,6 +53,14 @@ export class Game {
 		return this.players;
 	}
 
+	get maxRows() {
+		return this.grid.rows;
+	}
+
+	get maxCols() {
+		return this.grid.columns;
+	}
+
 	private init(): void {
 		for (let col = 0; col < this.grid.columns; col++) {
 			for (let row = 0; row < this.playerRows; row ++) {
