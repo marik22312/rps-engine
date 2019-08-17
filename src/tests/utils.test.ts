@@ -1,4 +1,4 @@
-import { getRangemNumber } from "../utils";
+import { getRangemNumber } from '../utils';
 
 test('Create Random Number', () => {
 	const maxCount = 10;
@@ -9,4 +9,4 @@ test('Create Random Number', () => {
 		expect(randNum).toBeGreaterThanOrEqual(i);
 		expect(randNum).toBeLessThanOrEqual(maxCount);
 	}
-})
+});

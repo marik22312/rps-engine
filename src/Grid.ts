@@ -1,8 +1,7 @@
-import { GRID_HEIGHT, GRID_WIDTH } from "./config";
-import { IGrid } from "./interfaces/Grid";
+import { GRID_HEIGHT, GRID_WIDTH } from './config';
+import { IGrid } from './interfaces/Grid';
 
 export class Grid {
-
 	private gridHeight: number;
 	private gridWidth: number;
 
@@ -25,6 +24,4 @@ export class Grid {
 	set width(newWidth: number) {
 		this.gridWidth = newWidth;
 	}
-
-	
 }

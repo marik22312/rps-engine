@@ -1,58 +1,10 @@
-import { GRID_HEIGHT, GRID_WIDTH, LETTERS, PLAYER_ROWS } from "./config";
+import { GRID_HEIGHT, GRID_WIDTH, IPlayerLocation, PLAYER_COLORS, PLAYER_DIRECTIONS, PLAYER_ROWS } from './config';
 
-import { isInterfaceDeclaration } from "@babel/types";
-import { Grid } from "./Grid";
-import { IGrid } from "./interfaces/Grid";
-import { Player } from "./Player";
+import { IGrid } from './interfaces/Grid';
+import { Player } from './Player';
+import { getLocation } from './utils';
 
 export class Game {
-
-	public static getLocation(col: number, row: number, type?: string): string {
-		const letters = LETTERS.split('');
-
-		if (col < 0) {
-			throw new Error('Column must be a positive number')
-		}
-
-		if (row < 0) {
-			throw new Error('Row must be a positive number')
-		}
-
-		if (col === 10) {
-			return letters[col -1].concat(row.toString())
-		}
-
-		const stringCol = col.toString().split('');
-
-		let letterCode = '';
-
-		while(stringCol.length > 0) {
-			letterCode = letterCode.concat(letters[parseInt(stringCol[0], 10)]);
-			stringCol.shift();
-		}
-
-		return letterCode.concat(row.toString());
-	}
-
-	private grid: IGrid;
-	private playerRows: number;
-	private players: {[x: string]: Player};
-
-	constructor(columns?: number, rows?: number, playerRows?: number) {
-		this.grid = {
-			columns: columns || GRID_WIDTH,
-			rows: rows || GRID_HEIGHT,
-		};
-		
-		this.playerRows = playerRows || PLAYER_ROWS;
-		this.players = {};
-		this.init();
-	}
-
-	public getPlayersMap() {
-		return this.players;
-	}
-
 	get maxRows() {
 		return this.grid.rows;
 	}
@@ -61,16 +13,132 @@ export class Game {
 		return this.grid.columns;
 	}
 
-	private init(): void {
+	get players() {
+		return this.board;
+	}
+
+	private grid: IGrid;
+	private playerRows: number;
+	private board: { [x: string]: Player };
+
+	constructor(columns?: number, rows?: number, playerRows?: number) {
+		this.grid = {
+			columns: columns || GRID_WIDTH,
+			rows: rows || GRID_HEIGHT,
+		};
+
+		this.playerRows = playerRows || PLAYER_ROWS;
+		this.board = {};
+
+		this.initBoard();
+	}
+
+	public makeTurn(player: Player, dir: PLAYER_DIRECTIONS) {
+		const currentLocation = player.currentLocation;
+		let newLocation = currentLocation;
+
+		let newCol: number = 0;
+		let newRow: number = 0;
+		let newLocationCode: string = '';
+
+		switch (dir) {
+			case PLAYER_DIRECTIONS.UP:
+				if (currentLocation.row + 1 > this.grid.rows) {
+					throw new Error("You Can't Move There!");
+				}
+				newRow = currentLocation.row + 1;
+				newCol = currentLocation.col;
+
+				newLocationCode = getLocation(newCol, newRow);
+
+				newLocation = {
+					col: newCol,
+					locationCode: newLocationCode,
+					row: newRow,
+				};
+
+				break;
+
+			case PLAYER_DIRECTIONS.DOWN:
+				if (currentLocation.row - 1 < 0) {
+					throw new Error("You Can't Move There!");
+				}
+				newRow = currentLocation.row - 1;
+				newCol = currentLocation.col;
+
+				newLocationCode = getLocation(newCol, newRow);
+
+				newLocation = {
+					col: newCol,
+					locationCode: newLocationCode,
+					row: newRow,
+				};
+				break;
+
+			case PLAYER_DIRECTIONS.RIGHT:
+				if (currentLocation.col + 1 > this.grid.columns) {
+					throw new Error("You Can't Move There!");
+				}
+				newRow = currentLocation.row;
+				newCol = currentLocation.col + 1;
+
+				newLocationCode = getLocation(newCol, newRow);
+
+				newLocation = {
+					col: newCol,
+					locationCode: newLocationCode,
+					row: newRow,
+				};
+				break;
+
+			case PLAYER_DIRECTIONS.LEFT:
+				if (currentLocation.col - 1 > 0) {
+					throw new Error("You Can't Move There!");
+				}
+				newRow = currentLocation.row;
+				newCol = currentLocation.col - 1;
+
+				newLocationCode = getLocation(newCol, newRow);
+
+				newLocation = {
+					col: newCol,
+					locationCode: newLocationCode,
+					row: newRow,
+				};
+				break;
+
+			default:
+				break;
+		}
+
+		if (this.board[newLocationCode]) {
+			const opponent = this.board[newLocationCode];
+
+			if (player.battle(opponent)) {
+				this.updateLocation(player, newLocation);
+			}
+		}
+
+		return this;
+	}
+
+	private initBoard(): void {
 		for (let col = 0; col < this.grid.columns; col++) {
-			for (let row = 0; row < this.playerRows; row ++) {
-				const location = Game.getLocation(col, row);
-				const location2 = Game.getLocation(col, this.grid.rows - row);
-				this.players[location] = new Player(col, row);
-				this.players[location2] = new Player(col, this.grid.rows - row);
+			for (let row = 0; row < this.playerRows; row++) {
+				const location = getLocation(col, row);
+				const location2 = getLocation(col, this.grid.rows - row);
+				this.board[location] = new Player(col, row, location, PLAYER_COLORS.RED);
+				this.board[location2] = new Player(col, this.grid.rows - row, location, PLAYER_COLORS.BLUE);
 			}
 		}
 	}
 
+	private updateLocation(player: Player, newLocation: IPlayerLocation) {
+		const currentLocation = player.currentLocation;
 
+		player.updateLocation(newLocation);
+		this.board[newLocation.locationCode] = player;
+
+		delete this.board[currentLocation.locationCode];
+	}
 }
