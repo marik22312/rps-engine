@@ -136,8 +136,6 @@ export class Game {
 	}
 
 	private updateLocation(player: Player, newLocation: IPlayerLocation) {
-		const currentLocation = player.currentLocation;
-
 		this.removePlayer(player);
 
 		player.updateLocation(newLocation);

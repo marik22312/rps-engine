@@ -1,5 +1,7 @@
-import { Game } from './Game';
+// import { Game } from './Game';
 
-const game = new Game();
-// tslint:disable-next-line: no-console
-console.log(game.players);
+// const game = new Game();
+// // tslint:disable-next-line: no-console
+// console.log(game.players);
+
+export * from './Game';

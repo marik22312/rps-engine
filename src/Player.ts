@@ -4,7 +4,6 @@ import {
 	IPlayerLocation,
 	PLAYER_COLORS,
 	PLAYER_DIRECTIONS,
-	PlayerWeapons,
 } from './config';
 import { getRangemNumber } from './utils';
 
@@ -21,11 +20,15 @@ export class Player {
 		return this.location;
 	}
 
+	get color() {
+		return this.playerColor;
+	}
+
 	public static DIRECTIONS = PLAYER_DIRECTIONS;
 	private playerWeapon: string;
 	private location: IPlayerLocation;
 	private isWeaponHidden: boolean;
-	private color: PLAYER_COLORS;
+	private playerColor: PLAYER_COLORS;
 
 	constructor(col: number, row: number, locationCode: string, color: PLAYER_COLORS.BLUE | PLAYER_COLORS.RED) {
 		this.location = {
@@ -34,7 +37,7 @@ export class Player {
 			row,
 		};
 		this.isWeaponHidden = true;
-		this.color = color;
+		this.playerColor = color;
 
 		this.playerWeapon = AVAILABLE_WEAPONS[getRangemNumber(0, AVAILABLE_WEAPONS.length - 1)];
 	}
@@ -75,3 +78,5 @@ export class Player {
 		this.isWeaponHidden = true;
 	}
 }
+
+export default Player;

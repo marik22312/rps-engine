@@ -1,4 +1,4 @@
-import { getRangemNumber } from '../utils';
+import { getLocation, getRangemNumber } from '../utils';
 
 test('Create Random Number', () => {
 	const maxCount = 10;
@@ -10,3 +10,10 @@ test('Create Random Number', () => {
 		expect(randNum).toBeLessThanOrEqual(maxCount);
 	}
 });
+
+test('Location parser', () => {
+	expect(getLocation(0, 0)).toBe('A0');
+	expect(getLocation(0, 1)).toBe('A1');
+	expect(getLocation(10, 1)).toBe('J1');
+});
+

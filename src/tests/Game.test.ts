@@ -1,16 +1,12 @@
 import { Game } from '../Game';
+import Player from '../Player';
 import { getLocation } from '../utils';
-
-test('Building Game', () => {
-	expect(getLocation(0, 0)).toBe('A0');
-	expect(getLocation(0, 1)).toBe('A1');
-	expect(getLocation(10, 1)).toBe('J1');
-});
+jest.mock('../Player');
+const cols = 6;
+const rows = 7;
+const playerRows = 2;
 
 test('Building Board', () => {
-	const cols = 6;
-	const rows = 7;
-	const playerRows = 2;
 	const game = new Game(cols, rows, playerRows);
 
 	const playersMap = game.players;
@@ -22,3 +18,8 @@ test('Building Board', () => {
 		}
 	}
 });
+
+test('Building Players', () => {
+	expect(Player).toBeCalledTimes(cols * playerRows * 2);
+	
+})
