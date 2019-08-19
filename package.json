@@ -1,8 +1,8 @@
 {
   "name": "@rps-engine/core",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Rock Paper Scissors Engine",
-  "main": "index.js",
+  "main": "lib/Game.js",
   "types": "lib/index.d.ts",
   "repository": {
     "type": "git",

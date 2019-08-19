@@ -4,7 +4,7 @@ import { IGrid } from './interfaces/Grid';
 import { Player } from './Player';
 import { getLocation } from './utils';
 
-export class Game {
+export default class Game {
 	get maxRows() {
 		return this.grid.rows;
 	}
@@ -16,6 +16,8 @@ export class Game {
 	get players() {
 		return this.board;
 	}
+
+	public static getLocationCode = getLocation;
 
 	private grid: IGrid;
 	private playerRows: number;
@@ -128,9 +130,9 @@ export class Game {
 		for (let col = 0; col < this.grid.columns; col++) {
 			for (let row = 0; row < this.playerRows; row++) {
 				const location = getLocation(col, row);
-				const location2 = getLocation(col, this.grid.rows - row);
+				const location2 = getLocation(col, this.grid.rows - 1 - row);
 				this.board[location] = new Player(col, row, location, PLAYER_COLORS.RED);
-				this.board[location2] = new Player(col, this.grid.rows - row, location, PLAYER_COLORS.BLUE);
+				this.board[location2] = new Player(col, this.grid.rows - 1 - row, location2, PLAYER_COLORS.BLUE);
 			}
 		}
 	}
@@ -140,7 +142,6 @@ export class Game {
 
 		player.updateLocation(newLocation);
 		this.board[newLocation.locationCode] = player;
-
 	}
 
 	private removePlayer(player: Player) {

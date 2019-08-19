@@ -1,10 +1,4 @@
-import {
-	AVAILABLE_WEAPONS,
-	BattleMap,
-	IPlayerLocation,
-	PLAYER_COLORS,
-	PLAYER_DIRECTIONS,
-} from './config';
+import { AVAILABLE_WEAPONS, BattleMap, IPlayerLocation, PLAYER_COLORS, PLAYER_DIRECTIONS } from './config';
 import { getRangemNumber } from './utils';
 
 export class Player {

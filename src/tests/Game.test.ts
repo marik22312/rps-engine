@@ -1,4 +1,4 @@
-import { Game } from '../Game';
+import Game from '../Game';
 import Player from '../Player';
 import { getLocation } from '../utils';
 jest.mock('../Player');
@@ -14,12 +14,11 @@ test('Building Board', () => {
 	for (let col = 0; col < cols; col++) {
 		for (let row = 0; row < playerRows; row++) {
 			expect(playersMap).toHaveProperty(getLocation(col, row));
-			expect(playersMap).toHaveProperty(getLocation(col, rows - row));
+			expect(playersMap).toHaveProperty(getLocation(col, rows - 1 - row));
 		}
 	}
 });
 
 test('Building Players', () => {
 	expect(Player).toBeCalledTimes(cols * playerRows * 2);
-	
-})
+});

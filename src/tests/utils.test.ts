@@ -16,4 +16,3 @@ test('Location parser', () => {
 	expect(getLocation(0, 1)).toBe('A1');
 	expect(getLocation(10, 1)).toBe('J1');
 });
-

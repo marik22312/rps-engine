@@ -4,4 +4,4 @@
 // // tslint:disable-next-line: no-console
 // console.log(game.players);
 
-export * from './Game';
+export default './Game';
